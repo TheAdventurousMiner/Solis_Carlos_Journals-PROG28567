@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
 
+    public float ratioValue = 0f;
+
     void Start()
     {
         
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour
 
         DetectAsteroids(10f, asteroidTransforms);
 
-        WarpPlayer(enemyTransform, 0f);
+        WarpPlayer(enemyTransform, ratioValue);
     }
     private void SpawnBombAtOffset(Vector3 inOffset)
     {
@@ -63,19 +65,19 @@ public class Player : MonoBehaviour
             spawnCorner = (Vector3.up + Vector3.left).normalized;
         }
 
-        else if (randomCorner == 1)
+        if (randomCorner == 1)
         {
             //top right corner bomb
             spawnCorner = (Vector3.up + Vector3.right).normalized;
         }
 
-        else if (randomCorner == 2)
+        if (randomCorner == 2)
         {
             //bottom left corner bomb
             spawnCorner = (Vector3.down + Vector3.left).normalized;
         }
 
-        else if (randomCorner == 3)
+        if (randomCorner == 3)
         {
             //bottom right corner bomb
             spawnCorner = (Vector3.down + Vector3.right).normalized;
@@ -94,11 +96,11 @@ public class Player : MonoBehaviour
         {
             newPlayerPosition = transform.position;
         }
-        else if (ratio == 1f)
+        if (ratio == 1f)
         {
             newPlayerPosition = target.position;
         }
-        else if (ratio == 0.5f)
+        if (ratio == 0.5f)
         {
             newPlayerPosition = Vector3.Lerp(transform.position, target.position, ratio);
         }
@@ -110,9 +112,8 @@ public class Player : MonoBehaviour
     {
         Vector3 playerPosition = transform.position;
 
-        for(int i = 0;i < inAsteroids.Count;i++)
+        foreach (Transform asteroid in inAsteroids)
         {
-            Transform asteroid = inAsteroids[i];
 
             Vector3 asteroidDirection = asteroid.position - playerPosition;
             float dist = asteroidDirection.magnitude;

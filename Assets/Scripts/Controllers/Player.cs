@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
 
+    public float bombTrailSpacing;
+    public int numberOfTrailBombs;
+
     public float ratioValue = 0f;
 
     void Start()
@@ -24,7 +27,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpawnBombTrail(0.5f, 5);
+            SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -43,12 +46,12 @@ public class Player : MonoBehaviour
     }
     public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
     {
-        Vector3 bombTrailDirection = Vector2.down;
+        Vector3 bombTrailDirection = Vector3.down;
 
         for (int i = 0; i < inNumberOfBombs; i++)
         {
-            int spaceBehindPlayer = i + 1;
-            Vector3 spawnPosition = transform.position + bombTrailDirection * inBombSpacing * spaceBehindPlayer;
+            Vector3 offset = new Vector3(0, bombTrailSpacing, 0);
+            Vector3 spawnPosition = transform.position - offset + bombTrailDirection * inBombSpacing * i;
             Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
         }
     }

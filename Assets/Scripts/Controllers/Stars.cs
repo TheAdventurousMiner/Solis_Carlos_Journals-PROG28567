@@ -10,5 +10,16 @@ public class Stars : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DrawConstillation();
+    }
+    public void DrawConstillation()
+    {
+        drawingTime += Time.deltaTime;
+
+        for (int i = 0; i < starTransforms.Count - 1; i++)
+        {
+            Debug.DrawLine(starTransforms[i].position, starTransforms[i + 1].position, Color.white, drawingTime);
+        }
+       
     }
 }

@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [Header("Radar Properties")]
     public float radarRadius = 1f;
     public int numberOfPoints = 6;
+    private Color radarColour;
 
     void Update()
     {
@@ -61,11 +62,22 @@ public class Player : MonoBehaviour
 
         Vector3 center = transform.position;
 
+        float enemyDetected = Vector3.Distance(center, enemyTransform.position);
+
+        if (enemyDetected < radius)
+        {
+            radarColour = Color.red;
+        }
+        else
+        {
+            radarColour = Color.green;
+        }
+
         for (int i = 0; i < points.Count - 1; i++)
         {
-            Debug.DrawLine(center + points[i], center + points[i + 1], Color.green);
+            Debug.DrawLine(center + points[i], center + points[i + 1], radarColour);
         }
-        Debug.DrawLine(center + points[points.Count - 1], center + points[0], Color.green);
+        Debug.DrawLine(center + points[points.Count - 1], center + points[0], radarColour);
     }
 
 }

@@ -9,8 +9,8 @@ public class Moon : MonoBehaviour
     [Header("Motion Properties")]
     public float orbitRadius;
     public float orbitSpeed;
-    public Transform moonTransform;
-    
+    private float angle;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,15 @@ public class Moon : MonoBehaviour
 
     public void OrbitalMotion(float radius, float speed, Transform target)
     {
-        speed += Time.deltaTime;
+
+        angle += speed * Time.deltaTime;
+
+        float radians = angle * Mathf.Deg2Rad;
+        
+        Vector3 point = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * radius;
+        
+        transform.position = planetTransform.position + point;
+              
+            
     }
 }

@@ -30,9 +30,7 @@ public class EnemyMechanic : MonoBehaviour
             currentTarget = player;
         }
 
-        Vector2 direction = currentTarget.position - transform.position;
-
-        Vector2 movement = direction * speed * Time.deltaTime;
+        Vector2 direction = (currentTarget.position - transform.position).normalized;
 
         float upAngle = CalculateDegAngleFromVector(transform.up);
         float directionAngle = CalculateDegAngleFromVector(direction);
@@ -51,7 +49,7 @@ public class EnemyMechanic : MonoBehaviour
             transform.Rotate(0, 0, deltaAngle);
         }
 
-        float dot = Vector3.Dot(transform.up, direction);
+        Vector2 movement = direction * speed * Time.deltaTime;
 
         transform.position += (Vector3)movement; 
     }

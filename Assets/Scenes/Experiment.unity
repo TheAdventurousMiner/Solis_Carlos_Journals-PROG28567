@@ -223,6 +223,7 @@ MonoBehaviour:
   blackhole: {fileID: 722494800}
   speed: 10
   blackholeRadius: 3
+  angularSpeed: 500
 --- !u!1 &722494798
 GameObject:
   m_ObjectHideFlags: 0

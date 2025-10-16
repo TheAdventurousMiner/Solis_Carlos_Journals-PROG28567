@@ -6,6 +6,7 @@ public class EnemyMechanic : MonoBehaviour
     public Transform blackhole;
     public float speed = 1f;
     public float blackholeRadius = 5f;
+    public float angularSpeed = 60f;
 
     private Transform currentTarget;
 
@@ -33,7 +34,29 @@ public class EnemyMechanic : MonoBehaviour
 
         Vector2 movement = direction * speed * Time.deltaTime;
 
+        float upAngle = CalculateDegAngleFromVector(transform.up);
+        float directionAngle = CalculateDegAngleFromVector(direction);
+
+        float deltaAngle = Mathf.DeltaAngle(upAngle, directionAngle);
+        float sign = Mathf.Sign(deltaAngle);
+
+        float angleStep = angularSpeed * Time.deltaTime * sign;
+
+        if (Mathf.Abs(angleStep) < Mathf.Abs(deltaAngle))
+        {
+            transform.Rotate(0, 0, angleStep);
+        }
+        else
+        {
+            transform.Rotate(0, 0, deltaAngle);
+        }
+
+        float dot = Vector3.Dot(transform.up, direction);
+
         transform.position += (Vector3)movement; 
     }
-
+    private float CalculateDegAngleFromVector(Vector2 vec)
+    {
+        return Mathf.Atan2 (vec.y, vec.x) * Mathf.Rad2Deg;
+    }
 }

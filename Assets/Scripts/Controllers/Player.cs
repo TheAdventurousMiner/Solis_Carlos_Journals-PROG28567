@@ -1,134 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public List<Transform> asteroidTransforms;
     public Transform enemyTransform;
     public GameObject bombPrefab;
-    public List<Transform> asteroidTransforms;
+    public Transform bombsTransform;
 
-    public float bombTrailSpacing;
-    public int numberOfTrailBombs;
-
-    public float ratioValue = 0f;
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnBombAtOffset(new Vector3(0, 1, 0));
-        }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SpawnBombOnRandomCorner(5f);
-        }
-
-        DetectAsteroids(10f, asteroidTransforms);
-
-        WarpPlayer(enemyTransform, ratioValue);
-    }
-    private void SpawnBombAtOffset(Vector3 inOffset)
-    {
-        Vector3 spawnPosition = transform.position + inOffset;
-        Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
-    }
-    public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
-    {
-        Vector3 bombTrailDirection = Vector3.down;
-
-        for (int i = 0; i < inNumberOfBombs; i++)
-        {
-            Vector3 offset = new Vector3(0, bombTrailSpacing, 0);
-            Vector3 spawnPosition = transform.position - offset + bombTrailDirection * inBombSpacing * i;
-            Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
-        }
     }
 
-    public void SpawnBombOnRandomCorner(float inDistance)
-    {
-        Vector3 spawnCorner = Vector3.zero;
-
-        int randomCorner = Random.Range(0, 4);
-
-        if (randomCorner == 0)
-        {
-            //Top left corner bomb
-            spawnCorner = (Vector3.up + Vector3.left).normalized;
-        }
-
-        if (randomCorner == 1)
-        {
-            //top right corner bomb
-            spawnCorner = (Vector3.up + Vector3.right).normalized;
-        }
-
-        if (randomCorner == 2)
-        {
-            //bottom left corner bomb
-            spawnCorner = (Vector3.down + Vector3.left).normalized;
-        }
-
-        if (randomCorner == 3)
-        {
-            //bottom right corner bomb
-            spawnCorner = (Vector3.down + Vector3.right).normalized;
-        }
-
-        Vector3 spawnPosition = transform.position + spawnCorner * inDistance;
-
-        Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
-    }
-
-    public void WarpPlayer(Transform target, float ratio)
-    {
-        Vector3 newPlayerPosition = transform.position;
-
-        if (ratio == 0f)
-        {
-            newPlayerPosition = transform.position;
-        }
-        if (ratio == 1f)
-        {
-            newPlayerPosition = target.position;
-        }
-        if (ratio == 0.5f)
-        {
-            newPlayerPosition = Vector3.Lerp(transform.position, target.position, ratio);
-        }
-        transform.position = newPlayerPosition;
-    }
-    
-
-    public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids)
-    {
-        Vector3 playerPosition = transform.position;
-
-        foreach (Transform asteroid in inAsteroids)
-        {
-
-            Vector3 asteroidDirection = asteroid.position - playerPosition;
-            float dist = asteroidDirection.magnitude;
-
-            if (dist < inMaxRange)
-            {
-                Vector3 normalizedDirection = asteroidDirection.normalized;
-                Vector3 endPoint = playerPosition + normalizedDirection * 2.5f;
-
-                Debug.DrawLine(playerPosition, endPoint, Color.green);
-            }
-
-        }
-    }
 }

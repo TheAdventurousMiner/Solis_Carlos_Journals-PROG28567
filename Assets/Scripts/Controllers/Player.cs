@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public List<Transform> asteroidTransforms;
     public Transform enemyTransform;
     public GameObject bombPrefab;
+    public GameObject missilePrefab;
     public Transform bombsTransform;
 
     [Header("Motion Properties")]
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        //controls
         Vector2 playerInput = Vector2.zero;
         if (Input.GetKey(KeyCode.UpArrow))
         {
@@ -39,6 +41,12 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             playerInput += Vector2.right;
+        }
+
+        //spawn missile
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SpawnMissileAtOffset(new Vector3(0, -1, 0));
         }
 
         if (playerInput.magnitude > 0)
@@ -64,6 +72,11 @@ public class Player : MonoBehaviour
         }
 
         transform.position += velocity * Time.deltaTime;
+    }
+    private void SpawnMissileAtOffset(Vector3 inOffset)
+    {
+        Vector3 spawnPosition = transform.position + inOffset;
+        Instantiate(missilePrefab, spawnPosition, Quaternion.identity);
     }
 
 }

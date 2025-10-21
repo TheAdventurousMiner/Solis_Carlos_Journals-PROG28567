@@ -5,26 +5,32 @@ public class Enemy : MonoBehaviour
 {
     public Transform player;
     public Transform blackhole;
+    private Vector3 currentTarget;
+
+    [Header("Motion Properties")]
     public float speed = 1f;
     public float blackholeRadius = 5f;
     public float angularSpeed = 60f;
+    public float distanceToPlayer = 3f;
 
-    private Transform currentTarget;
 
     private void Update()
     {
         float distanceToBlackHole = Vector2.Distance(transform.position, blackhole.position);
+        
 
         if (distanceToBlackHole < blackholeRadius)
         {
-            currentTarget = blackhole;
+            currentTarget = blackhole.position;
         }
         else
         {
-            currentTarget = player;
+            Vector3 offset = new Vector3(0, distanceToPlayer, 0);
+            currentTarget = player.position + offset;
+            
         }
 
-        Vector2 direction = (currentTarget.position - transform.position).normalized;
+        Vector2 direction = (currentTarget - transform.position).normalized;
 
         float upAngle = CalculateDegAngleFromVector(transform.up);
         float directionAngle = CalculateDegAngleFromVector(direction);

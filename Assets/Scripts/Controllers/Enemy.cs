@@ -26,16 +26,16 @@ public class Enemy : MonoBehaviour
         else
         {
             Vector3 offset = new Vector3(0, distanceToPlayer, 0);
-            currentTarget = player.position + offset;
+            currentTarget = player.position - offset;
             
         }
 
         Vector2 direction = (currentTarget - transform.position).normalized;
 
-        float upAngle = CalculateDegAngleFromVector(transform.up);
+        float currentAngle = CalculateDegAngleFromVector(transform.up);
         float directionAngle = CalculateDegAngleFromVector(direction);
 
-        float deltaAngle = Mathf.DeltaAngle(upAngle, directionAngle);
+        float deltaAngle = Mathf.DeltaAngle(currentAngle, directionAngle);
         float sign = Mathf.Sign(deltaAngle);
 
         float angleStep = angularSpeed * Time.deltaTime * sign;

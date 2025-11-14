@@ -13,13 +13,13 @@ public class PlayerTest : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             Vector3 moveLeft = transform.position + Vector3.left * speed;
             transform.position = moveLeft;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             Vector3 moveRight = transform.position + Vector3.right * speed;
             transform.position = moveRight;

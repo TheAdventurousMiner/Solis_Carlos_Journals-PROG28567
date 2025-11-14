@@ -16,6 +16,9 @@ public class CollisionCheck : MonoBehaviour
     {
         bool goThroughPlatform = Physics2D.GetIgnoreCollision(player, platform);
 
-        Debug.Log("Is the player going through the platform?" +  goThroughPlatform);
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("The player can go through the platform. " + goThroughPlatform);
+        }
     }
 }

@@ -39,14 +39,9 @@ public class AddTorqueTest : MonoBehaviour
             rb.AddTorque(rotateAmount, ForceMode2D.Force);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             rb.AddTorque(-rotateAmount, ForceMode2D.Force);
-        }
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddTorque(rotateAmount, ForceMode2D.Impulse);
         }
     }
 }

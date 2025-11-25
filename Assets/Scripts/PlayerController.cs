@@ -4,8 +4,27 @@ public class PlayerController : MonoBehaviour
 {
     public enum FacingDirection
     {
-        left, right
+        left = -1, right = 1
     }
+
+    public enum CharacterState
+    { 
+        Idle, Walking, Jumping, Dead
+    }
+
+    private CharacterState state = CharacterState.Idle;
+
+    [SerializeField] private Rigidbody2D body2D;
+
+    [Header("Walk Properties")]
+    public float maxSpeed = 5f;
+    public float accelerationTime = 0.5f;
+    public float decelerationTime = 0.25f;
+
+    [Header("Jump Properties")]
+    public float apexHeight = 3.5f;
+    public float apexTime = 0.5f;
+
 
     void Start()
     {
@@ -24,6 +43,11 @@ public class PlayerController : MonoBehaviour
     private void MovementUpdate(Vector2 playerInput)
     {
 
+    }
+
+    private void ProcessWalkInput()
+    {
+        //if(playerInput.x)
     }
 
     public bool IsWalking()

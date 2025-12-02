@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Boulder : MonoBehaviour
 {
+    public float destroySeconds = 10f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,6 +12,6 @@ public class Boulder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Destroy(gameObject, destroySeconds);
     }
 }

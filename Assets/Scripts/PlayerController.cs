@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public enum CharacterState
-    { 
+    {
         Idle, Walking, Jumping, Dead
     }
 
@@ -24,43 +24,123 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Properties")]
     public float apexHeight = 3.5f;
     public float apexTime = 0.5f;
+    public LayerMask groundLayer;
+    public float groundCheckDistance = 0.55f;
+    public Vector2 groundCheckSize = new(0.75f, .2f);
 
+    private Vector2 velocity;
+    private float acceleration;
+    private float deceleration;
+
+    private float gravity;
+    private float jumpVel;
+
+    private Vector2 playerInput;
+    private bool jumpPressed = false;
 
     void Start()
     {
-        
+        acceleration = maxSpeed / accelerationTime;
+        deceleration = maxSpeed / decelerationTime;
+
+        gravity = -2 * apexHeight / (apexTime * apexTime);
+        jumpVel = 2 * apexHeight / apexTime;
+
+        body2D.gravityScale = 0;
     }
 
     void Update()
     {
-        // The input from the player needs to be determined and
-        // then passed in the to the MovementUpdate which should
-        // manage the actual movement of the character.
-        Vector2 playerInput = new Vector2();
-        MovementUpdate(playerInput);
+        playerInput = new()
+        {
+            x = Input.GetAxisRaw("Horizontal"),
+            y = Input.GetButtonDown("Jump") ? 1 : 0
+        };
+
+        if (playerInput.y == 1) jumpPressed = true;
     }
 
-    private void MovementUpdate(Vector2 playerInput)
+    private void FixedUpdate()
     {
-
+        MovementUpdate();
     }
 
+    private void MovementUpdate()
+    {
+        ProcessWalkInput();
+        ProcessJumpInput();
+
+        body2D.linearVelocity = velocity;
+    }
+
+    /// <summary>
+    /// Modifies velocity.x based on playerInput.x.
+    /// </summary>
     private void ProcessWalkInput()
     {
-        //if(playerInput.x)
+        if (playerInput.x != 0)
+        {
+            if (Mathf.Sign(playerInput.x) != Mathf.Sign(velocity.x)) velocity.x *= -1;
+            velocity.x += playerInput.x * acceleration * Time.fixedDeltaTime;
+
+            velocity.x = Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
+        }
+        else if (Mathf.Abs(velocity.x) > 0.005f)
+        {
+            velocity.x += -Mathf.Sign(velocity.x) * deceleration * Time.fixedDeltaTime;
+        }
+        else
+        {
+            velocity.x = 0;
+        }
+    }
+
+    /// <summary>
+    /// Modifies velocity.y based on playerInput.y.
+    /// </summary>
+    private void ProcessJumpInput()
+    {
+        if (IsGrounded() && jumpPressed)
+        {
+            velocity.y = jumpVel;
+            jumpPressed = false;
+        }
+        else if (!IsGrounded())
+        {
+            velocity.y += gravity * Time.fixedDeltaTime;
+            velocity.y = Mathf.Max(velocity.y, -jumpVel);
+            jumpPressed = false;
+        }
+        else
+            velocity.y = 0;
     }
 
     public bool IsWalking()
     {
-        return false;
+        return playerInput.x != 0;
     }
     public bool IsGrounded()
     {
-        return false;
+        Vector3 origin = transform.position + Vector3.down * groundCheckDistance;
+
+        DrawGroundCheck(origin);
+
+        return Physics2D.OverlapBox(origin, groundCheckSize, 0, groundLayer);
+    }
+
+    private void DrawGroundCheck(Vector3 origin)
+    {
+        float halfW = groundCheckSize.x * 0.5f;
+        float halfH = groundCheckSize.y * 0.5f;
+
+        Debug.DrawLine(origin + new Vector3(halfW, halfH), origin + new Vector3(halfW, -halfH), Color.yellow);
+        Debug.DrawLine(origin + new Vector3(halfW, -halfH), origin + new Vector3(-halfW, -halfH), Color.yellow);
+        Debug.DrawLine(origin + new Vector3(-halfW, -halfH), origin + new Vector3(-halfW, halfH), Color.yellow);
+        Debug.DrawLine(origin + new Vector3(-halfW, halfH), origin + new Vector3(halfW, halfH), Color.yellow);
     }
 
     public FacingDirection GetFacingDirection()
     {
-        return FacingDirection.left;
+        return (FacingDirection)playerInput.x;
     }
 }

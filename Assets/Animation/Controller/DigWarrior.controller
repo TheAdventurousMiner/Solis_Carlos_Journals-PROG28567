@@ -201,7 +201,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7754380136248673337}
-    m_Position: {x: 310, y: 210, z: 0}
+    m_Position: {x: 330, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8582332431693030389}
     m_Position: {x: 180, y: 300, z: 0}
@@ -209,14 +209,14 @@ AnimatorStateMachine:
     m_State: {fileID: -3052594843433708606}
     m_Position: {x: 500, y: 300, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 8626993326581803494}
-    m_Position: {x: 535, y: 365, z: 0}
+    m_State: {fileID: 8619910259266525004}
+    m_Position: {x: 330, y: 100, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_AnyStatePosition: {x: 350, y: 30, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -302,14 +302,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &8626993326581803494
+--- !u!1102 &8619910259266525004
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DigWarrior_die
+  m_Name: Death
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -322,7 +322,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e75a0aae4988b9f4c92697be5e8cc01b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 685b1f0748516964788b0ccba6f7b36d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

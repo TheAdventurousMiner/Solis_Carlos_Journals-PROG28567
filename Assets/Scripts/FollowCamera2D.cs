@@ -3,7 +3,8 @@ using UnityEngine.Tilemaps;
 
 
 [RequireComponent(typeof(Camera))]
-public class FolllowCamera2D : MonoBehaviour
+
+public class FollowCamera2D : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float speed = 5f;

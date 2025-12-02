@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public enum CharacterState
-    {
+    { 
         Idle, Walking, Jumping, Dead
     }
 
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
     public float apexTime = 0.5f;
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.55f;
-    public Vector2 groundCheckSize = new(0.75f, .2f);
+    public Vector2 groundCheckSize = new(0.75f, .2f); 
 
     private Vector2 velocity;
     private float acceleration;
@@ -122,7 +123,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         Vector3 origin = transform.position + Vector3.down * groundCheckDistance;
-
+        
         DrawGroundCheck(origin);
 
         return Physics2D.OverlapBox(origin, groundCheckSize, 0, groundLayer);

@@ -27,7 +27,10 @@ public class PlayerController : MonoBehaviour
     public float apexTime = 0.5f;
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.55f;
-    public Vector2 groundCheckSize = new(0.75f, .2f); 
+    public Vector2 groundCheckSize = new(0.75f, .2f);
+    //variables for double jump mechanic
+    public int maxJumps = 2;
+    private int jumpCount = 0;
 
     private Vector2 velocity;
     private float acceleration;
@@ -101,10 +104,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ProcessJumpInput()
     {
-        if (IsGrounded() && jumpPressed)
+        if (IsGrounded())
+        {
+            jumpCount = 0;
+        }
+
+        if (jumpPressed && jumpCount < maxJumps)
         {
             velocity.y = jumpVel;
             jumpPressed = false;
+            jumpCount++;
         }
         else if (!IsGrounded())
         {

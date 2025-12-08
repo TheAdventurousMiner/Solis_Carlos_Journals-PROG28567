@@ -21,6 +21,14 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 5f;
     public float accelerationTime = 0.5f;
     public float decelerationTime = 0.25f;
+    //variables for dashing mechanic
+
+    [Header("Dash Properties")]
+    public float speedMultiplier = 2f;
+    private bool isDashing = false;
+    public float dashDuration = 2f;
+    public float dashRecharge = 1f;
+    private float dashTimer = 0f;
 
     [Header("Jump Properties")]
     public float apexHeight = 3.5f;
@@ -51,6 +59,8 @@ public class PlayerController : MonoBehaviour
         jumpVel = 2 * apexHeight / apexTime;
 
         body2D.gravityScale = 0;
+
+        dashTimer = dashDuration;
     }
 
     void Update()
@@ -62,6 +72,28 @@ public class PlayerController : MonoBehaviour
         };
 
         if (playerInput.y == 1) jumpPressed = true;
+
+        bool canSprint = Input.GetKey(KeyCode.LeftShift);
+
+        if (canSprint && dashTimer > 0f && playerInput.x != 0)
+        {
+            isDashing = true;
+        }
+        else
+        {
+            isDashing = false;
+        }
+
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+            dashTimer = Mathf.Max(dashTimer, 0f);
+        }
+        else
+        {
+            dashTimer += Time.deltaTime * dashDuration;
+            dashTimer = Mathf.Min(dashTimer, dashDuration);
+        }
     }
 
     private void FixedUpdate()
@@ -82,12 +114,26 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ProcessWalkInput()
     {
+        float currentMaxSpeed;
+        float currentAcceleration;
+
+        if (isDashing)
+        {
+            currentMaxSpeed = maxSpeed * speedMultiplier;
+            currentAcceleration = acceleration * speedMultiplier;
+        }
+        else
+        {
+            currentMaxSpeed = maxSpeed;
+            currentAcceleration = acceleration;
+        }
+
         if (playerInput.x != 0)
         {
             if (Mathf.Sign(playerInput.x) != Mathf.Sign(velocity.x)) velocity.x *= -1;
-            velocity.x += playerInput.x * acceleration * Time.fixedDeltaTime;
+            velocity.x += playerInput.x * currentAcceleration * Time.fixedDeltaTime;
 
-            velocity.x = Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
+            velocity.x = Mathf.Clamp(velocity.x, -currentMaxSpeed, currentMaxSpeed);
         }
         else if (Mathf.Abs(velocity.x) > 0.005f)
         {

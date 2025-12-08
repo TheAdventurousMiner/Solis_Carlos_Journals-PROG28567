@@ -3297,6 +3297,9 @@ MonoBehaviour:
   maxSpeed: 6
   accelerationTime: 0.2
   decelerationTime: 0.1
+  speedMultiplier: 2
+  dashDuration: 1
+  dashRecharge: 10
   apexHeight: 3
   apexTime: 0.35
   groundLayer:
@@ -3304,6 +3307,7 @@ MonoBehaviour:
     m_Bits: 8
   groundCheckDistance: 0.55
   groundCheckSize: {x: 0.6, y: 0.2}
+  maxJumps: 2
 --- !u!4 &1433354315
 Transform:
   m_ObjectHideFlags: 0

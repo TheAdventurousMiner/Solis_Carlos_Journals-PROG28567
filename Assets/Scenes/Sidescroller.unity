@@ -3299,7 +3299,8 @@ MonoBehaviour:
   decelerationTime: 0.1
   speedMultiplier: 2
   dashDuration: 1
-  dashRecharge: 10
+  dashCooldown: 10
+  cooldownTimer: 0
   apexHeight: 3
   apexTime: 0.35
   groundLayer:

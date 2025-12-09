@@ -21,14 +21,16 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 5f;
     public float accelerationTime = 0.5f;
     public float decelerationTime = 0.25f;
+    
     //variables for dashing mechanic
-
     [Header("Dash Properties")]
     public float speedMultiplier = 2f;
     private bool isDashing = false;
     public float dashDuration = 2f;
-    public float dashRecharge = 1f;
+    public float dashCooldown = 1f;
+    public float cooldownTimer;
     private float dashTimer = 0f;
+    private bool canDash = true;
 
     [Header("Jump Properties")]
     public float apexHeight = 3.5f;
@@ -73,26 +75,31 @@ public class PlayerController : MonoBehaviour
 
         if (playerInput.y == 1) jumpPressed = true;
 
-        bool canSprint = Input.GetKey(KeyCode.LeftShift);
-
-        if (canSprint && dashTimer > 0f && playerInput.x != 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             isDashing = true;
-        }
-        else
-        {
-            isDashing = false;
+            dashTimer = dashDuration;
+            canDash = false;
+            cooldownTimer = 0f;
         }
 
         if (isDashing)
         {
             dashTimer -= Time.deltaTime;
-            dashTimer = Mathf.Max(dashTimer, 0f);
+            
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+                cooldownTimer = dashCooldown;
+            }
         }
-        else
+        if (!canDash && !isDashing)
         {
-            dashTimer += Time.deltaTime * dashDuration;
-            dashTimer = Mathf.Min(dashTimer, dashDuration);
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer <= 0f)
+            {
+                canDash = true;
+            }
         }
     }
 

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     { 
         Idle, Walking, Jumping, Dead
     }
-
+    //Initial state
     private CharacterState state = CharacterState.Idle;
 
     [SerializeField] private Rigidbody2D body2D;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 0.55f;
     public Vector2 groundCheckSize = new(0.75f, .2f);
     //variables for double jump mechanic
-    public int maxJumps = 2;
+    public int maxJumps = 2; 
     private int jumpCount = 0;
 
     private Vector2 velocity;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         gravity = -2 * apexHeight / (apexTime * apexTime);
         jumpVel = 2 * apexHeight / apexTime;
 
-        body2D.gravityScale = 0;
+        body2D.gravityScale = 0; 
 
         dashTimer = dashDuration;
     }

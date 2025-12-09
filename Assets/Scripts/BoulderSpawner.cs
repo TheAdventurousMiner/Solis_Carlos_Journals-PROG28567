@@ -12,12 +12,14 @@ public class BoulderSpawner : MonoBehaviour
     {
         while (true)
         {
-
+            //Spawn the boulder prefab at the object's location
             GameObject boulder = Instantiate(boulderPrefab, transform.position, Quaternion.identity, transform);
 
+            //Get the rigidbody component from the boulder and apply instant force to it
             Rigidbody2D body2D = boulder.GetComponent<Rigidbody2D>();
             body2D.AddForce(Random.insideUnitCircle, ForceMode2D.Impulse);
 
+            //wait for an amount of seconds to spawn the boulder again
             yield return new WaitForSeconds(boulderSpawnDelay);
         }
         

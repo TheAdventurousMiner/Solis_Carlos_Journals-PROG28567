@@ -18,7 +18,8 @@ public class PlayerDeath : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        //If the player collides with a gameObject with a "Boulder" Tag,
+        //play the death animation from the player visuals script
         if (collision.gameObject.CompareTag("Boulder"))
         {
 

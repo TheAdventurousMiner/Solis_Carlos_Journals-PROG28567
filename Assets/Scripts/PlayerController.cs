@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D body2D;
 
+    [Header("Ground Properties")]
     public float groundCheckDistance = 0.6f;
     public Vector2 groundCheckOffset = new Vector2(0f, -0.5f);
     public LayerMask groundLayer;

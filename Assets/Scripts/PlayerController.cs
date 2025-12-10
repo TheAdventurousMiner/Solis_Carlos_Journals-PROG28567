@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D body2D;
 
-    public float groundCheckDistance = 0.1f;
+    public float groundCheckDistance = 0.6f;
+    public Vector2 groundCheckOffset = new Vector2(0f, -0.5f);
     public LayerMask groundLayer;
 
     public enum FacingDirection
@@ -45,6 +46,9 @@ public class PlayerController : MonoBehaviour
 
         //test if player is walking
         Debug.Log("Velocity X: " + velocity.x + " IsWalking: " + IsWalking());
+
+        bool groundChecker = IsGrounded();
+        Debug.Log("IsGrounded" + groundChecker);
 
     }
 
@@ -97,11 +101,22 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        Vector2 origin = (Vector2)transform.position + groundCheckOffset;
+        RaycastHit2D touchGround = Physics2D.Raycast(origin, Vector2.down, groundCheckDistance, groundLayer);
+
+        if (touchGround.collider != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public FacingDirection GetFacingDirection()
     {
         return facingDirection;
     }
+
 }

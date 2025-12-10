@@ -11,10 +11,15 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D body2D;
 
+    public float groundCheckDistance = 0.1f;
+    public LayerMask groundLayer;
+
     public enum FacingDirection
     {
         left, right
     }
+
+    private FacingDirection facingDirection = FacingDirection.right;
 
     void Start()
     {
@@ -37,12 +42,25 @@ public class PlayerController : MonoBehaviour
         //float horizontalMovement = Input.GetAxisRaw("Horizontal");
 
         MovementUpdate(playerInput);
+
+        //test if player is walking
+        Debug.Log("Velocity X: " + velocity.x + " IsWalking: " + IsWalking());
+
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
         if (playerInput.magnitude > 0)
         {
+            if (playerInput.x > 0)
+            {
+                facingDirection = FacingDirection.right;
+            }
+            else if (playerInput.x < 0)
+            {
+                facingDirection = FacingDirection.left;
+            }
+
             velocity += playerInput.normalized * acceleration * Time.deltaTime;
 
             if (velocity.magnitude > maxSpeed)
@@ -66,15 +84,24 @@ public class PlayerController : MonoBehaviour
 
     public bool IsWalking()
     {
-        return false;
+        if (Mathf.Abs(velocity.x)  > 0.01f)
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
     }
     public bool IsGrounded()
     {
-        return false;
+        return Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
     }
 
     public FacingDirection GetFacingDirection()
     {
-        return FacingDirection.left;
+        return facingDirection;
     }
 }

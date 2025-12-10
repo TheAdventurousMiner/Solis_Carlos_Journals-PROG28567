@@ -1706,7 +1706,8 @@ MonoBehaviour:
   decelerationTime: 1
   acceleration: 1
   deceleration: 1
-  groundCheckDistance: 0.1
+  groundCheckDistance: 0.6
+  groundCheckOffset: {x: 0, y: -0.5}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8

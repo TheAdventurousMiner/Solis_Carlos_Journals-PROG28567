@@ -1,34 +1,27 @@
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
+    [Header("Motion Properties")]
+    public float maxSpeed = 1.0f;
+    public float accelerationsTime, decelerationTime;
+    public float acceleration, deceleration;
+    private Vector2 velocity;
+
+    private Rigidbody2D body2D;
+
     public enum FacingDirection
     {
-        left = -1, right = 1
+        left, right
     }
-
-    public enum CharacterState
-    { 
-        Idle, Walking, Jumping, Dead
-    }
-
-    private CharacterState state = CharacterState.Idle;
-
-    [SerializeField] private Rigidbody2D body2D;
-
-    [Header("Walk Properties")]
-    public float maxSpeed = 5f;
-    public float accelerationTime = 0.5f;
-    public float decelerationTime = 0.25f;
-
-    [Header("Jump Properties")]
-    public float apexHeight = 3.5f;
-    public float apexTime = 0.5f;
-
 
     void Start()
     {
-        
+        acceleration = maxSpeed / accelerationsTime;
+        deceleration = maxSpeed / decelerationTime;
+
+        body2D = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -37,17 +30,38 @@ public class PlayerController : MonoBehaviour
         // then passed in the to the MovementUpdate which should
         // manage the actual movement of the character.
         Vector2 playerInput = new Vector2();
+        {
+            playerInput.x = Input.GetAxisRaw("Horizontal");
+        }
+
+        //float horizontalMovement = Input.GetAxisRaw("Horizontal");
+
         MovementUpdate(playerInput);
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        if (playerInput.magnitude > 0)
+        {
+            velocity += playerInput.normalized * acceleration * Time.deltaTime;
 
-    }
+            if (velocity.magnitude > maxSpeed)
+            {
+                velocity = velocity.normalized * maxSpeed;
+            }
+        }
+        else
+        {
+            velocity -= velocity.normalized * deceleration * Time.deltaTime;
 
-    private void ProcessWalkInput()
-    {
-        //if(playerInput.x)
+            if (Mathf.Abs(velocity.x) < 0.01f)
+            {
+                velocity = Vector2.zero;
+            }
+        }
+
+        body2D.linearVelocity = new Vector2(velocity.x, velocity.y);
+
     }
 
     public bool IsWalking()
